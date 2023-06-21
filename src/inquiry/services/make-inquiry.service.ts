@@ -1,29 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { Configuration, OpenAIApi } from 'openai';
+import { OpenAiService, TranslateService } from '../../libs';
+import { MakeInquiryBody } from '../dto';
 
 @Injectable()
 export class MakeInquiryService {
-  private openAi: OpenAIApi;
+  constructor(
+    private readonly openAiService: OpenAiService,
+    private readonly translateService: TranslateService,
+  ) {}
 
-  constructor() {
-    const conf = new Configuration({ apiKey: process.env.OPEN_AI_API_KEY });
-    this.openAi = new OpenAIApi(conf);
-  }
+  async exec({ content }: MakeInquiryBody) {
+    const contentInEng = await this.translateService.korean2English(content);
+    const response = await this.openAiService.makeInquiry(contentInEng);
 
-  async exec() {
-    const chatCompletion = await this.openAi.createChatCompletion({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        {
-          role: 'user',
-          content:
-            "Tell us about the most controversial of Joe Biden's recent moves.",
-        },
-      ],
-    });
-
-    const response = chatCompletion.data.choices[0].message;
-    console.log(response);
-    return response;
+    return {
+      content: await this.translateService.english2Korean(response),
+    };
   }
 }

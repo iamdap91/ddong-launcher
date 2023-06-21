@@ -1,12 +1,13 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { MakeInquiryService } from '../services';
+import { MakeInquiryBody } from '../dto';
 
 @Controller('inquiries')
 export class InquiryController {
   constructor(private readonly makeInquiryService: MakeInquiryService) {}
 
   @Post()
-  async makeInquiry() {
-    return await this.makeInquiryService.exec();
+  async makeInquiry(@Body() body: MakeInquiryBody) {
+    return await this.makeInquiryService.exec(body);
   }
 }

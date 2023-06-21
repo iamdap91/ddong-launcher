@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MakeInquiryService } from '../make-inquiry.service';
+import { MakePostService } from '../make-post.service';
 
 describe('OpenAiInquiryService', () => {
-  let service: MakeInquiryService;
+  let service: MakePostService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [MakeInquiryService],
+      providers: [MakePostService],
     }).compile();
 
-    service = module.get(MakeInquiryService);
+    service = module.get(MakePostService);
   });
 
   it('should be defined', () => {

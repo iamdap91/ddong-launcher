@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TistoryService } from '../../libs';
+import { TistoryService } from '@libs/tistory';
 import { CreateArticleDto } from '../dto';
 
 @Injectable()

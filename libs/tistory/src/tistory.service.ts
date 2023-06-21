@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import got, { Got } from 'got';
-import { CreateArticleDto } from '../../article/dto';
+import { CreateArticleDto } from '../../../apps/api/src/article/dto';
 
 @Injectable()
 export class TistoryService {

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ArticleController } from './controllers';
 import { AttachImageService, CreateArticleService } from './services';
-import { TistoryModule } from '../libs';
+import { TistoryModule } from '@libs/tistory';
 
 @Module({
   imports: [TistoryModule],

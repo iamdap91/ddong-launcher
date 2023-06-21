@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { OpenAiService } from '../../libs';
+import { OpenAiService } from '@libs/open-ai';
 import { MakeImageBody, MakeImageResponse } from '../dto';
 
 @Injectable()

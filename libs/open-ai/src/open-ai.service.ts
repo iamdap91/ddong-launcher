@@ -4,7 +4,7 @@ import {
   MakeImageBody,
   MakeImageResponse,
   MakePostResponse,
-} from '../../ai-build/dto';
+} from '../../../apps/api/src/ai-build/dto';
 
 @Injectable()
 export class OpenAiService {

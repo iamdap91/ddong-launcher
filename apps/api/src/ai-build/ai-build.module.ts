@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MakeImageService, MakePostService } from './services';
 import { AiBuildController } from './controllers';
-import { OpenAiModule, TranslateModule } from '../libs';
+import { OpenAiModule, TranslateModule } from '../../../../libs';
 
 @Module({
   imports: [OpenAiModule, TranslateModule],

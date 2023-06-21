@@ -15,6 +15,25 @@ export class OpenAiService {
     this.openAi = new OpenAIApi(conf);
   }
 
+  async makeTopics(content: string): Promise<string[]> {
+    const chatCompletion = await this.openAi.createChatCompletion({
+      model: 'gpt-3.5-turbo',
+      messages: [
+        {
+          role: 'system',
+          content: `answer in following JSON format and answer in korean. { topics : "each topic in array. no order number" }`,
+          name: 'system',
+        },
+        { role: 'user', content: content },
+      ],
+    });
+
+    return (
+      JSON.parse(chatCompletion?.data?.choices?.[0].message?.content).topics ||
+      []
+    );
+  }
+
   async makePost(content: string): Promise<MakePostResponse> {
     const chatCompletion = await this.openAi.createChatCompletion({
       model: 'gpt-3.5-turbo',

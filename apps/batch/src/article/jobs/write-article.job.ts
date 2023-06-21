@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { OpenAiService } from '@libs/open-ai';
 import { TranslateService } from '@libs/translate';
 import { TistoryService } from '@libs/tistory';
@@ -12,20 +12,24 @@ export class WriteArticleJob {
   ) {}
 
   async exec(topic: string) {
-    const postFix = '에 대한 블로그 포스팅 주제를 10 개 뽑아줘.';
+    const postFix = '에 대한 블로그 포스팅 주제를 5 개 뽑아줘.';
     const topics = await this.openAiService.makeTopics(topic + postFix);
 
     for (const topic of topics) {
+      Logger.log(`🔥topic: ${topic} start`);
       const topicInEnglish = await this.translateService.korean2English(topic);
 
-      const [postInfo, image] = await Promise.all([
-        this.openAiService.makePost(topicInEnglish),
-        this.openAiService.makeImage({
-          n: 1,
-          size: '256x256',
-          prompt: topicInEnglish,
-        }),
-      ]);
+      const postInfo = await this.openAiService.makePost(topicInEnglish);
+      if (!postInfo.content) {
+        Logger.debug(postInfo);
+        continue;
+      }
+
+      const image = await this.openAiService.makeImage({
+        n: 1,
+        size: '512x512',
+        prompt: topicInEnglish,
+      });
 
       await this.tistoryService.writePost({
         title: topic,

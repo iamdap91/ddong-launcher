@@ -40,14 +40,19 @@ export class OpenAiService {
       messages: [
         {
           role: 'system',
-          content: `answer in following JSON format and answer in korean. {title: 'title',  tag: 'comma separated 10 keywords', content: 'answer in Semantic html'}`,
+          content: `answer in following JSON format and answer in korean. {title: 'title',  tag: 'comma separated 10 keywords', content: 'answer in Semantic html which can be parsed in json. it needs to be at least 7 paragraphs.'}`,
           name: 'system',
         },
         { role: 'user', content: content },
       ],
     });
 
-    return JSON.parse(chatCompletion?.data?.choices?.[0].message?.content);
+    return JSON.parse(
+      chatCompletion?.data?.choices?.[0].message?.content
+        .replaceAll('\n', '')
+        .replaceAll('\t', '')
+        .replaceAll('\\', ''),
+    );
   }
 
   async makeImage({
@@ -56,7 +61,7 @@ export class OpenAiService {
     size,
   }: MakeImageBody): Promise<MakeImageResponse> {
     const res = await this.openAi.createImage({
-      prompt,
+      prompt: `${prompt}. do not make image of animal.`,
       size,
       n,
     });

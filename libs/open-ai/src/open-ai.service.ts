@@ -61,7 +61,7 @@ export class OpenAiService {
     size,
   }: MakeImageBody): Promise<MakeImageResponse> {
     const res = await this.openAi.createImage({
-      prompt: `${prompt}. do not make image of animal.`,
+      prompt: `${prompt}. shouldn't include human or animal.`,
       size,
       n,
     });

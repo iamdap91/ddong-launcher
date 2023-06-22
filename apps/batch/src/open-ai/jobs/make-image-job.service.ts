@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { OpenAiService } from '@libs/open-ai';
 import { pipeline as streamPipeline } from 'node:stream/promises';
-import fs from 'node:fs';
+import fs from 'fs';
 import got from 'got';
 
 @Injectable()
@@ -16,6 +16,8 @@ export class MakeImageJob {
       size: '256x256',
       prompt: topic,
     });
+
+    Logger.debug(`👉image: ${image.url}`);
 
     await streamPipeline(
       got.stream(image.url),

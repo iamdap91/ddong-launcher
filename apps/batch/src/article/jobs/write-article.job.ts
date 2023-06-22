@@ -12,7 +12,7 @@ export class WriteArticleJob {
   ) {}
 
   async exec(topic: string) {
-    const postFix = '에 대한 블로그 포스팅 주제를 5 개 뽑아줘.';
+    const postFix = '에 대한 블로그 포스팅 주제를 10 개 뽑아줘.';
     const topics = await this.openAiService.makeTopics(topic + postFix);
 
     for (const topic of topics) {
@@ -27,13 +27,17 @@ export class WriteArticleJob {
 
       const image = await this.openAiService.makeImage({
         n: 1,
-        size: '512x512',
+        size: '256x256',
         prompt: topicInEnglish,
       });
 
+      const {
+        tistory: { url },
+      } = await this.tistoryService.attachFileByRemoteUrl(image.url);
+
       await this.tistoryService.writePost({
         title: topic,
-        content: `<img alt=${topic} src=${image.url}> ${postInfo.content}`,
+        content: `<img alt=${topic} src=${url}> ${postInfo.content}`,
         tag: postInfo.tag,
       });
     }

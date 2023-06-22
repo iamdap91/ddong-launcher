@@ -16,30 +16,36 @@ export class WriteArticleJob {
     const topics = await this.openAiService.makeTopics(topic + postFix);
 
     for (const topic of topics) {
-      Logger.log(`🔥topic: ${topic} start`);
-      const topicInEnglish = await this.translateService.korean2English(topic);
+      try {
+        Logger.log(`🔥topic: ${topic} start`);
+        const topicInEnglish = await this.translateService.korean2English(
+          topic,
+        );
 
-      const postInfo = await this.openAiService.makePost(topicInEnglish);
-      if (!postInfo.content) {
-        Logger.debug(postInfo);
-        continue;
+        const postInfo = await this.openAiService.makePost(topicInEnglish);
+        if (!postInfo.content) {
+          Logger.debug(postInfo);
+          continue;
+        }
+
+        const image = await this.openAiService.makeImage({
+          n: 1,
+          size: '512x512',
+          prompt: topicInEnglish,
+        });
+
+        const {
+          tistory: { url },
+        } = await this.tistoryService.attachFileByRemoteUrl(image.url);
+
+        await this.tistoryService.writePost({
+          title: topic,
+          content: `<img alt=${topic} src=${url}> ${postInfo.content}`,
+          tag: postInfo.tag,
+        });
+      } catch (e) {
+        Logger.error(e);
       }
-
-      const image = await this.openAiService.makeImage({
-        n: 1,
-        size: '512x512',
-        prompt: topicInEnglish,
-      });
-
-      const {
-        tistory: { url },
-      } = await this.tistoryService.attachFileByRemoteUrl(image.url);
-
-      await this.tistoryService.writePost({
-        title: topic,
-        content: `<img alt=${topic} src=${url}> ${postInfo.content}`,
-        tag: postInfo.tag,
-      });
     }
   }
 }

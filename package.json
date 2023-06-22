@@ -12,7 +12,8 @@
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:batch": "npm run clean && nest start batch --",
-    "batch:article:auto-write": "npm run clean && nest build batch && nest start batch -- tistory auto-write \"대한민국 부동산 규제\"",
+    "batch:tistory:auto-write": "npm run clean && nest build batch && nest start batch -- tistory auto-write \"대한민국 부동산 규제\"",
+    "batch:open-ai:image": "npm run clean && nest build batch && nest start batch -- open-ai image \"코스피 차트 이미지\"",
     "start:api:dev": "nest start api --watch"
   },
   "dependencies": {

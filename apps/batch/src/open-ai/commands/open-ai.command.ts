@@ -1,14 +1,14 @@
 import { Command, CommandRunner } from 'nest-commander';
 import { Logger } from '@nestjs/common';
-import { WriteArticleJob } from '../jobs';
+import { MakeImageJob } from '../jobs';
 
 export enum SUB_COMMAND {
-  AUTO_WRITE = 'auto-write',
+  IMAGE = 'image',
 }
 
-@Command({ name: 'tistory', description: '똥글발사!' })
-export class TistoryCommand extends CommandRunner {
-  constructor(private readonly writeArticleJob: WriteArticleJob) {
+@Command({ name: 'open-ai', description: '똥글발사!' })
+export class OpenAiCommand extends CommandRunner {
+  constructor(private readonly makeImageJob: MakeImageJob) {
     super();
   }
 
@@ -18,8 +18,8 @@ export class TistoryCommand extends CommandRunner {
     Logger.debug(`subcommand: ${subCommand}, topic : '${topic}'`);
 
     switch (subCommand) {
-      case SUB_COMMAND.AUTO_WRITE:
-        return await this.writeArticleJob.exec(topic);
+      case SUB_COMMAND.IMAGE:
+        return await this.makeImageJob.exec(topic);
       default:
         return Logger.error('`subcommand`가 입력되지 않았습니다.');
     }

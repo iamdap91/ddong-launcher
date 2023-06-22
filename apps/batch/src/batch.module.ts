@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ArticleCommand, WriteArticleJob } from './article';
+import { TistoryCommand, WriteArticleJob } from './tistory';
 import { OpenAiModule } from '@libs/open-ai';
 import { TranslateModule } from '@libs/translate';
 import { TistoryModule } from '@libs/tistory';
@@ -12,6 +12,6 @@ import { ConfigModule } from '@nestjs/config';
     TranslateModule,
     TistoryModule,
   ],
-  providers: [WriteArticleJob, ArticleCommand],
+  providers: [WriteArticleJob, TistoryCommand],
 })
 export class BatchModule {}

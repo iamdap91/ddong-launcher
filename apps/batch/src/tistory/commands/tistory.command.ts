@@ -6,8 +6,8 @@ export enum SUB_COMMAND {
   AUTO_WRITE = 'auto-write',
 }
 
-@Command({ name: 'article', description: '똥글발사!' })
-export class ArticleCommand extends CommandRunner {
+@Command({ name: 'tistory', description: '똥글발사!' })
+export class TistoryCommand extends CommandRunner {
   constructor(private readonly writeArticleJob: WriteArticleJob) {
     super();
   }
